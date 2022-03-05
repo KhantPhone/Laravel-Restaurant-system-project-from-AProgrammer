@@ -7,81 +7,100 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-warning">Kitchen Panel</h1>
-          </div><!-- /.col -->
-          <!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card ">  
+          <div class="col-12">
+          <div class="card ">  
+                    @if (session('createdmessage'))
+                    <div class="alert alert-success alert-dismissible fade-in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success! </strong>{{ session('createdmessage') }}
+                    </div>
+                    @endif
+                    @if (session('updatedmessage'))
+                    <div class="alert alert-warning alert-dismissible fade-in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success! </strong>{{ session('updatedmessage') }}
+                    </div>
+                    @endif
+                    @if (session('deletedmessage'))
+                    <div class="alert alert-danger alert-dismissible fade-in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success! </strong>{{ session('deletedmessage') }}
+                    </div>
+                    @endif                    
                         <div class="card-header">
-                            <h3 class="card-title">default feature</h3>
+                            <h3 class="text-info">Dishes</h3>
+                            <a href="dish/create" class="btn btn-success py-2 px-5">Create</a>
                         </div>
                         <div class="card-body">
                             <table id="dishes" class="table table-bordered table-stripped">
                                 <thead>
                                 <tr>
                                     <th>
-                                        1
-                                    </th><th>
-                                        1
-                                    </th><th>
-                                        1
-                                    </th><th>
-                                        1
-                                    </th><th>
-                                        1
+                                        Number
+                                    </th>
+                                    <th>
+                                        Dish Name
+                                    </th> 
+                                    <th>
+                                        Dish Image
+                                    </th>                                   
+                                    <th>
+                                        Category Name
+                                    </th>
+                                    <th>
+                                        Created 
+                                    </th>
+                                    <th>
+                                        Actions
                                     </th>
                                 </tr>
                                 </thead>
+                                <?php
+                                    $i=1;
+                                ?>
+                                @foreach($dishes as $dish)
                                 <tbody>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-
+                                    <td>{{$i}}</td>
+                                    <td>{{$dish->name}}</td>
+                                    <td>
+                                        <img src="{{url('/images/'.$dish->image) }}" alt="dish image" class="img-fluid d-block mx-auto mb-3" style="width:100px; height:100px; ">
+                                    </td>                                 
+                                    <td>{{$dish->category->name}}</td>
+                                    <td>{{$dish->created_at}}</td>  
+                                    <td>
+                                        <div class="d-flex justify-content-center">                                           
+                                            <form action="/dish/{{$dish->id}}" method="POST">
+                                            <a href="/dish/{{$dish->id}}/edit" class="btn btn-warning mr-2">Edit</a>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="return confirm('Are you sure to delete this item?')"class="btn btn-danger">Delete</button>
+                                            </form>                                           
+                                        </div>
+                                    </td>                                    
                                 </tbody>
+                                <?php
+                                    $i++;
+                                ?>
+                                @endforeach
                             </table>
                         </div>
                     </div>
-
-            
-            </div>           
           </div>
-         
-         
-       
-        </div>
-        <!-- /.row -->
+        </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
+    <!-- /.content-header -->
+
+    
   </div>
   <!-- /.content-wrapper -->
 
 @endsection
-
-
+<script src="plugins/jquery/jquery.min.js"></script>
 <script>
-        $(function () {
-            
+        $(function () {            
             $('#dishes').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+          
             });
         });
     </script>

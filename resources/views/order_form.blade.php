@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->  
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+</head>
+<body>
+    
+        
+
+           <h2 class="text-center ">Order Form</h2>        
+           <div class="card-body"> 
+           @if (session('servedmessage'))
+                    <div class="alert alert-success alert-dismissible fade-in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success! </strong>{{ session('servedmessage') }}
+                    </div>
+            @endif                   
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-primary card-tabs">
+                            <div class="card-header p-0 pt-1">
+                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">New Order</a>
+                                </li>
+                                <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Order List</a>
+                                </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                    <form action="{{ route('order.submit') }}" method="post">
+                                        @csrf 
+                                         <div class="row">
+                                            @foreach($dishes as $dish)
+                                                <div class="col-md-3 ">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                        <img src="{{url('/images/'.$dish->image) }}" alt="dish image" class="img-fluid  mb-3" style="width:100px; height:100px; ">
+                                                        <div class="form-group">
+                                                            <label for="">{{$dish->name}}</label>
+                                                            <input type="number" name="{{$dish->id}}" class="form-control" >
+                                                        </div>
+                                                        
+                                                        </div>
+                                                    </div>
+                                                 
+                                                </div>
+                                                @endforeach
+                                                 
+                                            </div> 
+                                            <div class="form-group">
+                                                <select name="table" id="">
+                                                    @foreach($tables as $table)
+                                                    <option value="{{$table->id}}" >
+                                                        {{$table->number}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <input type="submit" value="submit" class="btn btn-success px-5 py-2">                                                                                  
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                    <table class="table table-bordered table-stripped">
+                                        <thead>
+                                        <tr>
+                                            
+                                            <th>
+                                                Dish Name
+                                            </th>
+                                            <th>
+                                                Table Number
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th> 
+                                            <th>
+                                                Actions
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    
+                                        @foreach($orders as $order)
+                                        <tbody>
+                                        
+                                            <td>{{$order->dish->name}}</td>                                                                   
+                                            <td>{{$order->table_id}}</td>
+                                            <td>{{$status[$order->status]}}</td>                                      
+                                            <td>
+                                                <div>
+                                                    <a href="/order/{{$order->id}}/serve" class="btn btn-outline-success">
+                                                        Serve
+                                                    </a>                                 
+                                                </div>                                       
+                                            </td>                                    
+                                        </tbody>
+                                        
+                                        @endforeach
+                                    </table>
+                                </div>
+                    </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+</body>
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script src="/plugins/datatables/jquery.dataTables.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- AdminLTE App -->
+<script src="/dist/js/adminlte.min.js"></script>
+</html>

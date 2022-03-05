@@ -1,0 +1,59 @@
+@extends('layouts.master')
+
+@section('content')
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-12">
+          <div class="card ">  
+              <div class="card-header">
+                <h3 class="text-info">Create A Delicious Dish</h3>
+                <a href="/dish" class="btn btn-danger py-2 px-5 my-2">Back</a>
+              </div>
+                <div class="card-body">                
+                    @if ($errors->any())
+                      <div class="alert alert-danger">
+                         <ul>
+                           @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                             @endforeach
+                          </ul>
+                        </div>
+                       @endif
+                    <form action="/dish" method="post" enctype="multipart/form-data">
+                          @csrf
+                          <div class="form-group">
+                            <label for="">Name</label>
+                              <input type="text" class="form-control" name="name" placeholder="name" value="{{old('name')}}">
+                          </div>
+                          <div class="form-group">
+                              <label for="">Category</label>
+                                <select name="category" id="" class="form-control">
+                                    <option value="">Select Category</option>
+                                      @foreach($categories as $cat)
+                                      <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                      @endforeach
+                                  </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="d-block">Image</label>
+                                <input type="file"  name="dish_image">
+                              </div>
+                              <button type="submit" class="btn btn-success py-2 px-5 my-3">Create</button>
+                      </form>
+                  </div>
+                </div>
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    
+  </div>
+  <!-- /.content-wrapper -->
+
+@endsection
